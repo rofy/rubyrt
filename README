@@ -3,130 +3,124 @@ README for rubyrt
 	
 0. What's Rubyrt ?
 -------------------
-	- Rubyrt is a reporting tool developed by Summer 2008 trainees of eSpace company, which is a software company located in Alexandria, Egypt.
-	- Until now Rubyrt is a text-based reporting tool, it has no graphical user interface yet. 
-	- It is worth to mention that any contribution to Rubyrt is quite easy as its main targets are:
+- Rubyrt is a reporting tool developed by Summer 2008 trainees of eSpace company, which is a software company located in Alexandria, Egypt.
+- Until now Rubyrt is a text-based reporting tool, it has no graphical user interface yet. 
+- It is worth to mention that any contribution to Rubyrt is quite easy as its main targets are:
 	
-	   1) Be very scalable, and for this reason; making use of the Ruby language dynamic nature and facilities,was tried by hard, to make 
-	      Rubyrt, as much generic as possible.
-	   2) Be very user friendly, that's why Rubyrt's language is an internal DSL ( Domain Specific Language ),as it is Ruby Syntax.
-
-	- In the current Rubyrt's version, only database adapters (Activerecord) is supported as the data source, and Rubyrt's generated 
-	  report is supported only in HTML/CSS format for now, but since its design is built to be very generic and scalable, extra adapters 
-	  and exporters are very easy to be added, and any contributions is very welcomed and appreciated.
+  1) Be very scalable, and for this reason; making use of the Ruby language dynamic nature and facilities,was tried by hard, to make Rubyrt, as much generic as possible.
+  2) Be very user friendly, that's why Rubyrt's language is an internal DSL ( Domain Specific Language ),as it is Ruby Syntax.
+ - In the current Rubyrt's version, only database adapters (Activerecord) is supported as the data source, and Rubyrt's generated report is supported only in HTML/CSS format for now, but since its design is built to be very generic and scalable, extra adapters and exporters are very easy to be added, and any contributions is very welcomed and appreciated.
 
 1. How to use Rubyrt ?
 -----------------------
-	- Rubyrt's only input is a configuration YAML file, that the user should write and specify it's path as an argument for the generate_report
-	  method which is the only outer interface of Rubyrt.
-	  so when using Rubyrt, your code should look something like:
+- Rubyrt's only input is a configuration YAML file, that the user should write and specify it's path as an argument for the generate_report method which is the only outer interface of Rubyrt.
+so when using Rubyrt, your code should look something like:
 	  
-						   |--------------------------------------------------------------------------------------------------------|
-						   |require 'rubyrt'                                                                                        |
-                           | rubyrt_host = Rubyrt.new.generate_report(                                                              |                                 
-						   |:yaml_path           => "C:/Documents and Settings/new_format.yml",                                     |             
-						   |:default_path        => $rubyrt_default ,                                                               |                              
-						   |:sql_statements      => ["select * from employees","select Name from employees"],                       |
-						   |:output              => "html",                                                                         |                                            
-						   |:parent_path    	 => 'C:\Documents and Settings\\')                                                  |                          
-						   |#$rubyrt_default is declared in rubyrt.rb using Dir.filename(__FILE__) + ‘./config/default.yml’	        |
-                           |                                                                                                        |
-						   |--------------------------------------------------------------------------------------------------------|
+						      require 'loader'
+   rubyrt_host = Rubyrt.new.generate_report(
+   :yaml_path           => "C:/Documents and Settings/new_format.yml",
+   :default_path           => "./config/default.yml",
+   :sql_statements        => ["select * from employees","select Name from employees"],
+   :output                => "html",
+   :parent_path    => 'C:\Documents and Settings\\'#,
+   #:block                 => #block of code should be ,
+   ) 
+##$rubyrt_default is declared in rubyrt.rb using Dir.filename(__FILE__) + â€˜./config/default.ymlâ€™	
 						   
-	where :
-			:yaml_path 
-			------------
-				is where you should specify the path of your configuration yaml file
-			:default_path 
-			--------------
-				is where you should specify the path of a default configuration yaml file. This frees rubyrt's user from filling every single word
-            in his configuartion file, and in cases where the user doesn't specify any formating, the default values in this file are used instead.				
-			BUT of you don't want to play with Rubyrt's default values; then you should never play with this default path.
-			The default file packaged with the gem supports only two tables ( 2 SQL statements ) ,if in your case , you need to support more 
-			tables in the same report then you HAVE TO either:
-			- open the default file, and insert places for your new tables (This will be clear enough under configuration file structure section)
-			or
-			- specify your own default file.
-			
-			:sql_statements
-			----------------
-				is where you should specify your SQL statements, ( supposing your data source is activerecord ).
-			
-			:block
-			-------
-			    is where you should specify a block of code, to be executed, instead of the SQL statements, but this case is not shown in 
-				the above code snippet example.
-			
-			:output
-			--------
-				is where you should specify your required output format, which is only "html" in the current version.
-				
-			:parent_path
-			-------------
-				is where you should specify the path of the folder that will contain your generated report.
-				
-	REMARK:		|----------------------------------------------------------------------------------------------------------------------------|
-				|The code snippet example shows Windows path, but that doesn't mean that Rubyrt's OS is only Windows, but its only tested on |
-				|Windows , although it should work just fine on Linux as well.                                                               |
-				|----------------------------------------------------------------------------------------------------------------------------|
+where :
 
-	- The Configuration file 
-	==========================
+:yaml_path 
+------------
+
+is where you should specify the path of your configuration yaml file
+
+:default_path 
+--------------
+is where you should specify the path of a default configuration yaml file. This frees rubyrt's user from filling every single word in his configuration file, and in cases where the user doesn't specify any formatting, the default values in this file are used instead.				
+BUT of you don't want to play with Rubyrt's default values; then you should never play with this default path.
+The default file packaged with the gem supports only two tables ( 2 SQL statements ) ,if in your case , you need to support more tables in the same report then you HAVE TO either:
+
+      - open the default file, and insert places for your new tables (This will be clear enough under configuration file structure section)
+      - specify your own default file.
+			
+:sql_statements
+----------------
+
+is where you should specify your SQL statements, ( supposing your data source is activerecord ).
+			
+:block
+-------
+
+is where you should specify a block of code, to be executed, instead of the SQL statements, but this case is not shown in the above code snippet example.
+			
+:output
+--------
+
+is where you should specify your required output format, which is only "html" in the current version.
+				
+:parent_path
+-------------
+is where you should specify the path of the folder that will contain your generated report.
+				
+REMARK:		
+The code snippet example shows Windows path, but that doesn't mean that Rubyrt's OS is only Windows, but its only tested on Windows , although it should work just fine on Linux as well.                                            
+				
+- The Configuration file 
+==========================
 	
-	A complete example of the configuration YAML file can be found under the example folder.
-	and a complete explanation is discussed as follows:
+A complete example of the configuration YAML file can be found under the example folder.
+and a complete explanation is discussed as follows:
 	
-	Rubyrt supports 4 report components:
-		1) Parameters
-				Any parameters should start by the symbol @ ,these are replaced with thier corresponding values by rubyrt's compiler when ever
-			seen.
+Rubyrt supports 4 report components:
+
+1) Parameters
+
+Any parameters should start by the symbol @ ,these are replaced with thier corresponding values by rubyrt's compiler when ever seen.
 			
 									|------------------|
 									|@name: eSpace     |
 									|@attribute: City  |
 									|------------------|
-		2) Static_Text
-				Which mean that the user would specify the value as a string in the config file, that will be just copied by rubyrt'.
+2) Static_Text
+
+Which mean that the user would specify the value as a string in the config file, that will be just copied by rubyrt'.
 	
 	
-		3) Text_Field
-				Which mean that the value will come from a data source.
+3) Text_Field
+
+Which mean that the value will come from a data source.
 		   
-		4) Expression 
-				A Rubyrt's Expression means a demand for some statistical analysis to be made by Rubyrt for the user.
-				for now Rubyrt supports the following functions
-				- max
-				- min
-				- avg
-				- stdv
+4) Expression 
+
+A Rubyrt's Expression means a demand for some statistical analysis to be made by Rubyrt for the user.
+for now Rubyrt supports the following functions
+- max
+- min
+- avg
+- stdv
 				
-				if you requested a not supported function , InvalidRubyrtExpression exception would be thrown.
-				The expression should be written like :
+if you requested a not supported function , InvalidRubyrtExpression exception would be thrown.
+The expression should be written like :
 				
-			|--------------------------------------------------------------------------------------------------------------|
-			|	['Average Age: $E{Age.avg}  ', 'Maximum Age: $E{Age.max}  ', 'Standard deviation of Age: $E{Age.stdv}  ']  |
-			|--------------------------------------------------------------------------------------------------------------|
-				
-				They are put inside an Array, because they are all requested for the same table, or to be more accurate, for the same SQL statment.
-				even if you request only one Expression , then your Array would have the length of one.
-				and Age is a component name , that you have already defined, as we will see now.
-			  - As you can see, Rubyrt's Language is just Ruby, and don't forget to request your expression inside $E{ }, otherwise
-			    an InvalidRubyrtExpression exception would be thrown.
-				
-				
-				
-	Configuration file Structure:
-	===============================
-	You should be quite familiar with the structure of YAML files, before reading further, if not then  please check the YAML cookbook at: 
-	
-								http://yaml4r.sourceforge.net/cookbook/#yaml_for_ruby
-								
-			after specifying the parameters if you have any, you have to specify a name for your report , and a background-color, don't
-			forget that any formating can be omitted, and the default value will be used instead. ONLY formatting can be omitted, taking into 
-			consideration that the default file , should be strictly structured according to the correct number of your components, this 
-			can be explained as follows:
 			
-			The out-lined structure is..
+['Average Age: $E{Age.avg}  ', 'Maximum Age: $E{Age.max}  ', 'Standard deviation of Age: $E{Age.stdv}  ']  
+			
+They are put inside an Array, because they are all requested for the same table, or to be more accurate, for the same SQL statement.
+even if you request only one Expression , then your Array would have the length of one.
+And Age is a component name , that you have already defined, as we will see now.
+ - As you can see, Rubyrt's Language is just Ruby, and don't forget to request your expression inside $E{ }, otherwise
+an InvalidRubyrtExpression exception would be thrown.
+							
+				
+Configuration file Structure:
+===============================
+You should be quite familiar with the structure of YAML files, before reading further, if not then  please check the YAML cookbook at: 
+	
+			http://yaml4r.sourceforge.net/cookbook/#yaml_for_ruby
+								
+after specifying the parameters if you have any, you have to specify a name for your report , and a background-color, don't forget that any formatting can be omitted, and the default value will be used instead. ONLY formatting can be omitted, taking into consideration that the default file , should be strictly structured according to the correct number of your components, this can be explained as follows:
+			
+The out-lined structure is..
 			
 			- title
 			- page_headers
@@ -139,113 +133,112 @@ README for rubyrt
 			- summary 
 			- data_source
 			
-		Each on of these can be more than  just one , for example if you have more than one title then part of your file should look something like:
+Each on of these can be more than  just one , for example if you have more than one title then part of your file should look something like:
+
+title: 
+  -
+    type: Static_Text
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      top: '0px'
+      bottom: '620px' 
+      left: '0px'
+      right: '0px'
+    caption: 'Company:'
+  -
+    type: Parameter
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Verdana'
+      font-weight: 'bold'
+      font-style: 'oblique'
+      position: 'absolute'
+      top: '15px'
+      bottom: '620px' 
+      left: '110px'
+      right: '10px'
+    caption: @name  									
 												
-												|-----------------------------------|			
-												|title:                             |
-												|  -                                |
-												|    type: Static_Text              |
-												|    style:                         |  
-												|      background-color: '#DDDDDD'  |
-												|      height: '13'                 |
-												|      width: '60'                  |
-												|      align: 'left'                |
-												|      font-color: '#000000'        |
-												|      top: '0px'                   |
-												|      bottom: '620px'              |
-												|      left: '0px'                  |
-												|      right: '0px'                 |
-												|    caption: 'Company:'            |
-												|  -                                |
-												|    type: Parameter                |
-												|    style:                         |
-												|      background-color: '#DDDDDD'  |
-												|      height: '13'                 |
-												|      width: '60'                  |
-												|      align: 'left'                |
-												|      font-color: '#000000'        |
-												|      font-size: '13'              |
-												|      font-face: 'Verdana'         |
-												|      font-weight: 'bold'          |
-												|      font-style: 'oblique'        |
-												|      position: 'absolute'         |
-												|      top: '15px'                  |
-												|      bottom: '620px'              |
-												|      left: '110px'                |
-												|      right: '10px'                |
-												|    caption: @name                 |
-												|-----------------------------------|	
 
-	The same is true for all of them, but notice that in case of details , each array element in the YAML specifies a table ( SQL statment )
-	for example describing one table should look something like this:
-	
-			|-----------------------------------------------------------------------------------------------------------------------------|
-			|details:																													  |
-			|  -                                                                                                                          |
-			|    type: Text_Field                                                                                                         |
-			|    name: [Country , City, Age, Name, id]                                                                                    |
-			|    style:                                                                                                                   |
-			|      background-color: 'if Age.caption > 22 && Age.caption < 26 then Name.background-color = #7C90BA; else #D8D6FB end'     |
-			|      height: '13'                                                                                                           |
-			|      width: '60'                                                                                                            |
-			|      align: 'center'                                                                                                        |
-			|      font-color: '#000000'                                                                                                  |
-			|      font-size,: 'if City.caption == "Aswan" then Name.font-size = 30; end'                                                 |
-			|      font-face: 'Times-Roman'                                                                                               |
-			|      font-weight: 'if City.caption == "Alexandria" then Name.font-weight = bold; else normal end'                           |
-			|      font-style: 'if Country.caption.include?("gyp") then Name.font-style = oblique; else normal end'                       |
-			|    caption:	                                                                                                              |
-			|-----------------------------------------------------------------------------------------------------------------------------|	
+The same is true for all of them, but notice that in case of details , each array element in the YAML specifies a table ( SQL statement )
+For example describing one table should look something like this:
 
-	Notice that you can specify some business logic in the details part,we will talk more about Rubyrt's language that can be understood 
-	by Rubyrt's compiler later.
+details:
+  -
+    type: Text_Field
+    name: [Country , City, Age, Name, id]
+    style: 
+      background-color: 'if Age.caption > 22 && Age.caption < 26 then Name.background-color = #7C90BA; else #D8D6FB end'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#000000'
+      font-size,: 'if City.caption == "Aswan" then Name.font-size = 30; end'
+      font-face: 'Times-Roman'
+      font-weight: 'if City.caption == "Alexandria" then Name.font-weight = bold; else normal end'
+      font-style: 'if Country.caption.include?("gyp") then Name.font-style = oblique; else normal end'
+    caption:	
+			
+Notice that you can specify some business logic in the details part,we will talk more about Rubyrt's language that can be understood by Rubyrt's compiler later.
 	
-	Also notice that when the type of the report component is Text_Field, the caption remains empty, as it will be filled from a data_source.
-	Furthermore , you should specify name for your report components, in order to be able to use them after that, when writing Rubyrt's code.
-	These names should never start with the symbol (@), otherwise InvalidRubyrtComponentName exception would be thrown.
+Also notice that when the type of the report component is Text_Field, the caption remains empty, as it will be filled from a data_source.
+Furthermore , you should specify name for your report components, in order to be able to use them after that, when writing Rubyrt's code.
+These names should never start with the symbol (@), otherwise InvalidRubyrtComponentName exception would be thrown.
 	
-	group_by 
-	===========
-	This should have array elements equal to the number of tables, if no grouping is required on one of them , leave it as an empty array, but 
-	do not omit it.
-	like:
+group_by 
+===========
+This should have array elements equal to the number of tables, if no grouping is required on one of them , leave it as an empty array, but do not omit it.
+like:
 															
-															|-------------------------|
-															|group_by:                |
-															|  - [Country, City, Age] |
-															|  - []	                  |
-															|-------------------------|
+															group_by:
+  - [Country, City, Age]
+  - []
 
-	In case of requesting grouping , then you should specify the array, sorted by the more dominant grouping level.
+In case of requesting grouping , then you should specify the array, sorted by the more dominant grouping level.
 
 
-	Please refer to the complete configuration YAML file under examples folder, to have a complete understanding of the required structure.
-	In future versions , a Graphical user interface will be supported, and this YAML file will be generated by Rubyrt according to the user 
-	graphical choices.
+Please refer to the complete configuration YAML file under examples folder, to have a complete understanding of the required structure.
+In future versions , a Graphical user interface will be supported, and this YAML file will be generated by Rubyrt according to the user graphical choices.
 	
-	Busniess Logic support 
-	=======================
+Busniess Logic support 
+=======================
 	
-	- only if statements is supported , they must have a then clause and an else clause, and must be ended with the ruby 'end' keyword
-	Any conditions are valid( as the if statment condition) as far as it is valid Ruby code.
+- only if statements is supported , they must have a then clause and an else clause, and must be ended with the ruby 'end' keyword
+Any conditions are valid( as the if statement condition) as far as it is valid Ruby code.
 	
-	- After the then clause, you should specify what will happen if some data satisfied the condition, the statment should end with a semicolon ( ;)
-	, otherwise MissingSemiColon exception would be thrown.You have to use the already defined components' names in describing what will happen.
-	although the formatting of the whole row will be triggered if it satisfies the condition.
+- After the then clause, you should specify what will happen if some data satisfied the condition, the statement should end with a semicolon ( ;), otherwise MissingSemiColon exception would be thrown.You have to use the already defined components' names in describing what will happen,although the formatting of the whole row will be triggered if it satisfies the condition.
+
+You can change any of these styles :
+"background-color", "font-size", "font-weight", "font-style", "align", "position", "font-face", "width", "height", "top", "bottom", "right", "left"
 	
-	- After the else clause,  you should  specify what will happen if the condition is not satisfied. and you should write only the value and 
-	then finish with an end keyword.
+- After the else clause,  you should  specify what will happen if the condition is not satisfied. and you should write only the value and then finish with an end keyword.
 	
-	examples:
+examples:
 	
-			|---------------------------------------------------------------------------------------------------------------------------|
-			|	                                                                                                                        |
-			|	background-color: 'if Age.caption > 22 && Age.caption < 26 then Name.background-color = #7C90BA; else #D8D6FB end'      |
-			|	font-size,: 'if City.caption == "Aswan" then Name.font-size = 30; end'                                                  |
-			|	font-style: 'if Country.caption.include?("gyp") then Name.font-style = oblique; else normal end'                        |
-			|	font-weight: 'if City.caption == "Alexandria" then Name.font-weight = bold; else normal end'                            |
-			|                                                                                                                           |
-			|---------------------------------------------------------------------------------------------------------------------------|
+details:
+  -
+    type: Text_Field
+    name: [Country , City, Age, Name, id]
+    style: 
+      background-color: 'if Age.caption > 22 && Age.caption < 26 then Name.background-color = #7C90BA; else #D8D6FB end'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#000000'
+      font-size,: 'if City.caption == "Aswan" then Name.font-size = 30; end'
+      font-face: 'Times-Roman'
+      font-weight: 'if City.caption == "Alexandria" then Name.font-weight = bold; else normal end'
+      font-style: 'if Country.caption.include?("gyp") then Name.font-style = oblique; else normal end'
+    caption:			
 			
 ----------------------------------------------------------------------------------------------------------------------------------------------------	
 
@@ -253,107 +246,114 @@ README for rubyrt
 ---------------------------------
 
 
-	- How to add a new Output Exporter :
-	************************************
+- How to add a new Output Exporter :
+************************************
 	
-	Rubyrt's Library contains a ruby class called OutputExporterFactory...How can you make use of this factory to be able to add new exporters??
+Rubyrt's Library contains a ruby class called OutputExporterFactory...How can you make use of this factory to be able to add new exporters??
 	
-	CASE I:: In case of block given,  which is the case of adding a new Exporter, that was not previously supported::
+CASE I:: In case of block given,  which is the case of adding a new Exporter, that was not previously supported::
 	---------------------------------------------------------------------------------------------------------------------
-	suppose that the new exporter is an xml exporter , we will do the following:
+suppose that the new exporter is an xml exporter , we will do the following:
 	
-							|-----------------------------------------------------------------|
-						    |outputExporter =  OutputExporterFactory.xml {XmlExporter.new}    | 
-						    |outputExporter.export yaml_hash ( to start exporting the data )  |
-							|-----------------------------------------------------------------|
-	
-	You should take care that any new format added should be a class named FormatExporter (where Exporter is a common suffix) and it should 
-	be a member in the OutputExporting module and its file must be called format_exporter.rb (where _exporter.rb is a common suffix)
-   
-	- How to add a new input Importer :
-	************************************
-	
-	Rubyrt's Library contains a ruby class called DataSrcAdapterFactory...How can you make use of this factory to be able to add new importers??
-	
-	You will specify in your YAML file , which is the input to rubyrt, in the data_source key:
-	For example, if your data source is activerecord,then part of your YAML file should lool like this:
-	
-										|---------------------------|
-										|data_source:				|
-										|  type: ActiveRecord		|
-										|  properties:				|
-										|    adapter: mysql			|	
-										|    database: test_database|
-										|    username: root			|
-										|    password: 123			|
-										|    host: localhost		|
-										|    encoding: utf8 		|
-										|    table: [[employees]]	|
-										|---------------------------|
-	
-	To add a new input importer, you should :
 
-		- take care that any new format added should be a class named FormatAdapter (where Adapter is a common suffix) and it should 
-	be a member in the InputImporting module and its file must be called format_adapter.rb (where _adapter.rb is a common suffix)
+						    outputExporter =  OutputExporterFactory.xml {XmlExporter.new}    
+						    outputExporter.export yaml_hash ( to start exporting the data )  
+							
 	
-	Also You should specify two arguments as part of the options given for the required generated report, like its parent path for example
-	These Two arguments are:
+You should take care that any new format added should be a class named FormatExporter (where Exporter is a common suffix) and it should be a member in the OutputExporting module and its file must be called format_exporter.rb (where _exporter.rb is a common suffix)
+   
+- How to add a new input Importer :
+************************************
 	
-		:@properties_hash -> which is name of the new adapter instance variable that holds properties, this name is the one used by you, inside 
-		Your adapter.
+Rubyrt's Library contains a ruby class called DataSrcAdapterFactory...How can you make use of this factory to be able to add new importers??
+	
+You will specify in your YAML file , which is the input to rubyrt, in the data_source key:
+For example, if your data source is active record,then part of your YAML file should look like this:
+
+data_source:
+  type: ActiveRecord
+  properties:
+    adapter: mysql
+    database: test_database
+    username: root
+    password: 123
+    host: localhost
+    encoding: utf8 
+    table: [[employees]]
+	
+										
+To add a new input importer, you should :
+
+- take care that any new format added should be a class named FormatAdapter (where Adapter is a common suffix) and it should be a member in the InputImporting module and its file must be called format_adapter.rb (where _adapter.rb is a common suffix)
+Also You should specify two arguments as part of the options given for the required generated report, like its parent path for example
+These Two arguments are:
+	
+:@properties_hash -> which is name of the new adapter instance variable that holds properties, this name is the one used by you, inside your adapter.
 		
-		:@parameters_hash -> which is name of the new adapter instance variable that holds headers name, this name is the one used by you, inside 
-		Your adapter.
+:@parameters_hash -> which is name of the new adapter instance variable that holds headers name, this name is the one used by you, inside your adapter.
 		
-		If you still can't get what i want to say, please refer to the follwoing code snippet, its taken from inside the database_adapter 
-		,so in the case of this code snippet:
+If you still can't get what i want to say, please refer to the follwoing code snippet, its taken from inside the database_adapter ,so in the case of this code snippet:
 		
 		
 					:@properties_hash => @properties_hash
 					:@parameters_hash => @parameters_hash
 							
-									|---------------------------------------------------------------|
-									|	 def get_data *args											|
-								    |  fields_array = []											|
-								    |  @parameters_hash.each_with_index do  |table_fields,index|	|
-								    |    fields_array[index]={}										|
-								    |    table_fields.each_with_index do |field,field_index|		|
-								    |      fields_array[index][field]=field_index					|
-								    |    end														|
-								    |  end															|
-								    |      @result =[]												|
-								    |  if(args[0][:sql_statements]!=nil)							|
-								    |      ActiveRecord::Base.establish_connection(  				|
-								    |      :adapter => @properties_hash["adapter"],  				|
-								    |      :host =>     @properties_hash["host"],  					|
-								    |      :username => @properties_hash["username"],				|
-								    |      :password => @properties_hash["password"],				|
-								    |      :database => @properties_hash["database"],				|
-								    |      :encoding => @properties_hash["encoding"]				|
-								    |      )														|
-									|---------------------------------------------------------------|
+  @parameters_hash.each_with_index do  |table_fields,index|
+        fields_array[index]={}
+        table_fields.each_with_index do |field,field_index|
+          fields_array[index][field]=field_index
+        end
+      end
+          @result =[]
+      if(args[0][:sql_statements]!=nil)
+          ActiveRecord::Base.establish_connection(  
+          :adapter => @properties_hash["adapter"],  
+          :host =>     @properties_hash["host"],  
+          :username => @properties_hash["username"],
+          :password => @properties_hash["password"],
+          :database => @properties_hash["database"],
+          :encoding => @properties_hash["encoding"]
+          )									
+							
 									
-	- How to add more statistical functions:
-	****************************************
-	
-	You will contribute in a class called StatisticsEngine, and make a class method for your new function 
-	like :
-									|--------------------------------------------------|
-									|class StatisticsEngine	                           |
-									|                                                  |
-									|  #This Engine waits for a one dimensional array. |
-									|                                                  |
-									|  def self.get_sum (my_array)                     |
-									|    my_array.inject(0){|sum,item| sum + item}     |   
-									|  end                                             |
-									|                                                  |
-									|  #..........                                     |
-									|end                                               |
-									|--------------------------------------------------|	
-	- How to implement more business logic support:
-	***********************************************
 
-    You would have to play inside RubyrtCompiler class which is considered to be the main business logic core.	
+- How to add more statistical functions:
+****************************************
+	
+You will contribute in a class called StatisticsEngine, and make a class method for your new function 
+like :
+									
+#This class is responsible for generating Rubyrt's statistical results
+#Only maximum , minimum , average and standard deviation are supported in the time being
+class StatisticsEngine
+  #This Engine waits for a one dimensional array.
+  def self.get_sum (my_array)
+    my_array.inject(0){|sum,item| sum + item}        
+  end
+ 
+  def self.avg (my_array)
+    get_sum(my_array)/my_array.size
+  end
+
+  def self.max (my_array)
+    my_array.max
+  end
+ 
+  def self.min (my_array)
+    my_array.min
+  end
+
+  def self.stdv (ary)
+    mean=self.avg(ary)
+    Math.sqrt( (ary.inject(0) { |dev, i| 
+                dev += (i - mean) ** 2}/ary.length.to_f) )
+  end 
+end# end of StatisticsEngine class	
+								
+- How to implement more business logic support:
+***********************************************
+
+ You would have to play inside RubyrtCompiler class which is considered to be the main business logic core.	
 ---------------------------------------------------------------------------------------------------------------------------------------------------	
 General Notes 
 ==============	
