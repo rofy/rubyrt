@@ -1,0 +1,62 @@
+<html>
+	<head>
+     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+        <link rel="StyleSheet" href= "<%= @path%>" TYPE="text/css" MEDIA=screen>
+    </head>
+    <body>
+		<% @title.each_index do|index|%>
+			<div class= <%="title#{index}"%> > <%=@title[index]["caption"]%></div> 
+ 		<%end%>
+		<br/>
+		<% @tables_counter.each_index do|index|%>
+			<% current_table_data=	@data[index]["caption"] %>
+			<table class="table" align="center">
+				<tr>
+					<% @fields[index]["caption"].each_index do |field|%>
+						<th class= <%="th#{index}"%>><%=  @fields[index]["caption"][field]%></th>
+					<% end %>
+				</tr>
+				<% current_table_data.each do |row|  %>
+				<%if not row[1] == "" %>
+						<tr class= <%="tr#{index}"%> id= <%="#{row[1]}"%>><% row[0].each_index do |column_index|  %>
+							<td>
+								<%= row[0][column_index] %>
+							</td>
+					<% end;%>
+				<%else%>
+						<tr class= <%="tr#{index}"%>><% row[0].each_index do |column_index|  %>
+							<td>
+								<%= row[0][column_index] %>
+							</td>
+					<% end;%>
+				<%end%>
+				</tr>
+				<% end;%>
+				<tr>
+					<% @column_footer[index]["caption"].each_index do |field|%>
+						<th class= <%="column_footer#{index}"%>><%=  @column_footer[index]["caption"][field]%></th>
+					<% end %>
+				</tr>
+			</table>
+			<br/>
+			<% if index!=@tables_counter.length-1 %>
+				<br style="page-break-after:always;">
+			<%end%>
+		<%end%>
+		<br/>
+		<% @last_page_footer.each_index do|index|%>
+			<div class= <%="last_page_footer#{index}"%> >
+				<%@last_page_footer[index]["caption"].each do |page_footer|%>
+					<br/>
+					<%=page_footer%>
+					<br/>
+				<%end%>
+				<br/>
+			</div> 
+		<%end%>	
+		<br/>
+		<% @summary.each_index do|index|%>
+			<div class= <%="summary#{index}"%> > <%=@summary[index]["caption"]%></div> 
+		<%end%>
+	</body>
+</html>

@@ -1,0 +1,203 @@
+@name: eSpace
+@attribute: City
+name: 'eSpace_Employees'
+background-color: '#F2F1EE'
+title: 
+  -
+    type: Static_Text
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      top: '0px'
+      bottom: '620px' 
+      left: '0px'
+      right: '0px'
+    caption: 'Company:'
+  -
+    type: Parameter
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Verdana'
+      font-weight: 'bold'
+      font-style: 'oblique'
+      position: 'absolute'
+      top: '15px'
+      bottom: '620px' 
+      left: '110px'
+      right: '10px'
+    caption: @name  
+page_headers:
+  -
+    type: Static_Text
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'normal'
+    caption: 'table 1'
+  -
+    type: Static_Text
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'normal'
+    caption: 'table 2'    
+column_headers:
+  -
+    type: [Static_Text , Parameter, Static_Text, Static_Text, Static_Text ]
+    name: [Country , City, Age, Name, id]
+    style: 
+      background-color: '#1A3665'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#F2F1EE'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'oblique'
+    caption: [Country, @attribute, Age, Name, id] 
+  -
+    type: [Static_Text]  
+    style: 
+      background-color: 'green'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'normal'
+    caption: [ Name]     
+group_by:
+  - [Country, City, Age]
+  - []
+  
+details:
+  -
+    type: Text_Field
+    name: [Country , City, Age, Name, id]
+    style: 
+      background-color: 'if Age.caption > 22 && Age.caption < 26 then Name.background-color = #7C90BA; else #D8D6FB end'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#000000'
+      font-size,: 'if City.caption == "Aswan" then Name.font-size = 30; end'
+      font-face: 'Times-Roman'
+      font-weight: 'if City.caption == "Alexandria" then Name.font-weight = bold; else normal end'
+      font-style: 'if Country.caption.include?("gyp") then Name.font-style = oblique; else normal end'
+    caption:
+  -
+    type: Text_Field
+    name: [Name]    
+    style: 
+      background-color: 'if Name.caption == "Sarah" || Name.caption == "Moustafa" then Name.background-color = orange; else #B5EDBC end'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption:
+column_footers:
+  -
+    type: [Expression , Parameter, Static_Text, Static_Text, Static_Text ]
+    name: [Age , City, Age, Name, id]
+    style: 
+      background-color: '#1A3665'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#F2F1EE'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'oblique'
+    caption: [['Average Age: $E{Age.avg}'], @attribute, Age, Name, id] 
+  -
+    type: [Static_Text]  
+    style: 
+      background-color: 'green'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'normal'
+    caption: [ Name]     
+page_footers:
+  -
+    type:
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption:
+last_page_footer:
+  - 
+    type: Expression
+    style:    
+      background-color: '#333C55'
+      align: 'left'
+      font-color: '#ffffff'
+      font-size: '18'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption: ['Average Age: $E{Age.avg}  ', 'Maximum Age: $E{Age.max}  ', 'Minimum Age: $E{Age.min}  ', 'Standard deviation of Age: $E{Age.stdv}  ']
+summary:
+  -  
+    type: Static_Text
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'center'
+      font-color: '#000000'
+      font-size: '20'
+      font-face: 'Times-Roman'
+      font-weight: 'bolder'
+      font-style: 'normal'
+    caption: 'eSpace Employees have been listed'
+data_source:
+  type: ActiveRecord
+  properties:
+    adapter: mysql
+    database: test_database
+    username: root
+    password: 123
+    host: localhost
+    encoding: utf8 
+    table: [[employees]]
+

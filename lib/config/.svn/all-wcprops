@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/Rubyrt/!svn/ver/256/Rubyrt_V2/config
+END
+new_format.yml
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/Rubyrt/!svn/ver/267/Rubyrt_V2/config/new_format.yml
+END
+default.yml
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/Rubyrt/!svn/ver/258/Rubyrt_V2/config/default.yml
+END
+template.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/Rubyrt/!svn/ver/272/Rubyrt_V2/config/template.html.erb
+END
+rubyrt_schema.yml
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/Rubyrt/!svn/ver/256/Rubyrt_V2/config/rubyrt_schema.yml
+END

@@ -1,0 +1,259 @@
+require 'strscan'
+require 'rubyrt' 
+#This class is where rubyrt understands your specified business logic
+class RubyrtCompiler 
+# Error Classes, they just inheret from StandardError, to make rubyrt error classes 
+  class InvalidRubyrtExpression     < StandardError;  end
+  class InvalidRubyrtComponentName  < StandardError;  end
+  class MissingSemiColon            < StandardError;  end
+#The initialize method initializes the RubyrtCompiler instance variables 
+#@css_index_counter: is a counter that is used for generating random names for the CSS IDs
+#The hash css_ids contains the id as a key and the corresponding css string as the value  
+#report_hash is the hash that holds the yaml file given by the user
+  def initialize 
+    @css_index_counter = 0;@css_ids,@report_hash = {},{}            
+    @css_strings, @then_statments, @index_array, @context ,@satisfied_conditions,@satisfied_thens=  [], [], [], [],[],[]
+    @config = ["background-color", "font-size", "font-weight", "font-style", "align", "position", "font-face", "width", "height", "top", "bottom", "right", "left"]
+  end #end of initialize
+ #compile method is the only public method in RubyrtCompiler class, it uses all the other private methods 
+ #that can be found in this class.This method is composed of 2 paths
+ #in the first path, it reads all the conditions (business logic written in ruby like code)
+ #in the second path, it starts checking the data rows to look which of them satisfies which combination of conditions 
+  def compile data_hash
+    conditions  = [];@report_hash = data_hash;prepare_index_array   #method call,putting in index_hash ( key is the column number and the value is the key in the table)
+    ruby_code = false; declare                                      #method call ,setting context array , from name keys    
+   #----------------------------------------------------    PATH 1   ------------------------------------------------------
+                                                 
+    @report_hash["details"].each do |table| 
+      table["style"].each_pair do |style_key, style_value|
+        ruby_code = code_exists?(style_value)
+        if ruby_code                                                #if code is found, then we will start compiling it in the following few lines 
+          tokenize style_value,"then", /then/, /else/               #method call,checking for the words between THEN and ELSE 
+          fill_then_statments                                       #method call , checking for semicolon to check if we have multiple assignments
+          tokenize style_value, "if", /if/, /then/                  #method call, checking for the words between IF and Then ( CONDITION ) 
+          condition = prepare_eval_input @string_scanner.pre_match  #method call 
+          if not conditions.include?(condition)
+            conditions << condition
+          end#end of if   
+          ruby_code = false
+       end # end of if ruby_code
+      end#end of block 
+    #---------------------------------------------------    PATH 2    ------------------------------------------------------
+      ruby_code_exists = false                                      #Starting flag for path 2
+      table["style"].each_pair do |style_key, style_value|
+        ruby_code = code_exists?(style_value)
+        if ruby_code
+          tokenize style_value,"then", /then/, /else/ 
+          style_value.replace(@else)  
+          ruby_code_exists = true                                    #ruby code found , flag changed
+        end#end of if ruby_code 
+      end #end of style block  
+      if ruby_code_exists
+        table["caption"].each do |row| 
+          conditions.each do |condition|                          
+            row[0].each do |column|
+              if condition.include?(@index_array[@report_hash["details"].index(table)][row[0].index(column)])
+                if not column == ""                                  #to include all cases ,cuz within grouped cases "" is inserted
+                  self.instance_variable_get("@#{@index_array[@report_hash["details"].index(table)][row[0].index(column)]}").instance_variable_set(:@caption, column)
+                end
+              end#end of if 
+            end#end columns block
+            if condition.include?("@@")
+              raise InvalidRubyrtComponentName
+            end#end of if
+            if(self.instance_eval(condition))
+              @satisfied_conditions << condition
+              @satisfied_thens << @then_statments[conditions.index(condition)]
+            end#end of if ( instance_eval)
+          end#end of condition block
+          if not @css_ids.include?(@satisfied_conditions)             #if it the first time , to combine these satisfied conditions
+            generate_css_string                                       #method call, generating demanded css 
+            row[1]= "business_logic" << @css_index_counter.to_s       #setting the css ID for the row
+            @css_ids[@satisfied_conditions]= "business_logic" << @css_index_counter.to_s
+            @css_index_counter+=1
+          else                                                        #if those combined conditions were already there from before
+            row[1] = @css_ids[@satisfied_conditions]
+          end#end of if
+          @satisfied_conditions,@satisfied_thens =[],[]               #reinitialization, to be ready for the next iteration
+          end#end of rows block 
+        end#end of if ruby code 
+        @css_ids = {}                                           
+    end #end of @report_hash["details"] 
+    is_expression?                                                    #method call, handling Expressions
+    @css_strings                                                      #is returned to rubyrt, to be accessible to exporters
+  end #end compile
+  private 
+ 
+ def declare 
+    @report_hash.each_value do |value |                               #setting context array , from name keys 
+      if value.is_a?(Array)
+        value.each do |array_element|
+          if array_element.is_a?(Hash) && array_element.has_key?("name") && array_element["name"].is_a?(Array)
+            array_element["name"].each do |context|
+              if not @context.include?(context)
+                 @context << context
+              end#end of if 
+            end#end of block
+          end#end of if
+        end#end of block
+      end#end of if 
+    end# end of block 
+   @context.each do | context |                                        #setting instance variables, in order to be able to invoke instance_eval on conditional statments
+     self.instance_variable_set("@#{context}".to_s, context)
+     self.instance_variable_get("@#{context}").instance_variable_set(:@caption,"")
+   end#end of block 
+ end# end of declare
+#this is just a tokenizer , that helps in the lexing operation 
+  def tokenize input, checker, start_word, end_word
+      @string_scanner = StringScanner.new(input)
+      if input.include?(checker) 
+        @string_scanner.scan_until(start_word);@string_scanner.string=(@string_scanner.rest);@string_scanner.scan_until(end_word)
+        if not @string_scanner.pre_match                               #handling the no else case
+          end_word = /end/;@string_scanner.scan_until(end_word)
+        else
+          scanner = StringScanner.new(@string_scanner.rest);scanner.scan_until(/else/);scanner.string=(scanner.rest);scanner.scan_until(/end/)
+          @else = scanner.pre_match
+       end#end of if 
+      end #end of if 
+  end # end of tokenize 
+
+  def fill_then_statments
+    @string_scanner.string=(@string_scanner.pre_match)
+    begin 
+     @string_scanner.scan_until(/;/)
+     if not @string_scanner.pre_match
+       raise MissingSemiColon
+     end
+     if not @then_statments.include?(@string_scanner.pre_match)
+      @then_statments << @string_scanner.pre_match
+     end #end of if
+     @string_scanner.string=(then_statment = @string_scanner.rest)
+   end while then_statment.include?(";")
+  end#end of fill_then_statments
+#check if the user has written any code in the configuration yaml file
+  def code_exists? input_string 
+    upcase_input_string = input_string.upcase
+    if upcase_input_string.include?("IF")
+      ruby_code = true
+    end#end of if 
+    ruby_code
+  end # end of code_exists?
+#prepare rubyrt code ( ruby syntax like)given by the user, to be ready as an input for Object.instance_eval method
+  def prepare_eval_input condition
+    @context.each do |context|                                        #adding @ 
+      if condition.include?(context)
+        condition.gsub!(context,"@#{context}")
+      end#end of if
+    end#end of block
+    if condition.include?("caption")                                  #replacing caption with instance_variable_get('@caption')
+      condition.gsub!(/caption/, "instance_variable_get('@caption')")
+    end#end of if
+    condition
+  end#end of prepare_eval_input
+
+  def prepare_index_array
+    @report_hash["details"].each do |table|
+      if table.has_key?("name")
+         index_hash = {}
+         table["name"].each_index do |name_index|
+           index_hash[name_index] = table["name"][name_index]
+         end#end of block
+         @index_array << index_hash
+      end#end of if
+    end#end of block 
+  end#end of prepare_index_hash
+
+  def generate_css_string
+  css_string = "";css_string<<"#business_logic" << @css_index_counter.to_s <<  "{"
+  @satisfied_thens.each do |statment|
+      @config.each do |configuration|
+        if statment.include?(configuration)
+          string_scanner = StringScanner.new(statment);string_scanner.scan_until(/=/)
+          css_string << configuration << ": " << string_scanner.rest << ";"
+        end#end of if
+      end#end of configuration block
+    end#end of statments block
+    css_string << "}\n"
+    if not @css_strings.include?(css_string)
+       @css_strings << css_string
+    end#end of if
+  end#end of generate_css_string
+#this method compiles rubyrt expressions 
+  def compile_expression expression, table_index
+    @string_scanner = StringScanner.new(expression)
+    if expression.include?("$E{")
+       @string_scanner.scan_until(/\$E\{/)
+       temp_expression =  @string_scanner.rest
+       temp_expression.delete!("}");temp_expression = temp_expression.lstrip;temp_expression = temp_expression.rstrip
+       if temp_expression.include?(".")
+          temp_array = temp_expression.split(".");demanded_array = [];column = ""
+          @report_hash["details"][table_index]["caption"].each do |row|
+          if not row[0][@index_array[table_index].index(temp_array[0])] == ""
+            column = row[0][@index_array[table_index].index(temp_array[0])]
+          end #end of if
+          demanded_array <<  column
+          end#end of block
+          begin 
+            expression = "<u>" + expression 
+            expression.gsub!("$E{#{temp_expression}}","</u><b>" << self.instance_eval("StatisticsEngine.#{temp_array[1]}(demanded_array).to_s") << "</b>")
+          rescue  
+            raise InvalidRubyrtExpression
+          end
+       else 
+          raise InvalidRubyrtExpression
+       end#end of if
+    else 
+      raise InvalidRubyrtExpression 
+    end#end of if
+    expression
+  end #end of compile expressions
+#this method is used to know if the user has written any rubyrt expression that needs to be compiled in the input yaml 
+  def is_expression?
+    @report_hash.each_value do |value|
+      if value.is_a?(Array)
+         value.each do |array_element|
+          if array_element.is_a?(Hash) && array_element.has_key?("type") && array_element["type"].is_a?(String)
+            if array_element["type"] == "EXPRESSION"
+              if array_element["caption"].is_a?(Array)
+                array_element["caption"].each_index do |index|
+                  array_element["caption"][index] = compile_expression array_element["caption"][index], value.index(array_element) #method call, to replace the expression with its result
+                end#end of block
+              else
+                raise InvalidRubyrtExpression
+              end#end of if
+           end#end of if
+         elsif array_element.is_a?(Hash) && array_element.has_key?("type") && array_element["type"].is_a?(Array)
+             array_element["type"].each do |inner_array_element|
+                if inner_array_element == "EXPRESSION"
+                  if array_element["caption"].is_a?(Array)
+                    array_element["caption"].each do |caption|
+                      if caption.is_a?(Array)
+                        caption.each_index do |index|
+                           caption[index] = compile_expression caption[index], value.index(array_element) #method call, to replace the expression with its result
+                        end#end of block
+                      end#end of if
+                    end#end of block
+                  else
+                    raise InvalidRubyrtExpression
+                  end#end of if
+               end#end of if
+             end#end of block
+          end#end of if
+        end#end of block
+      end#end of if
+    end#end of block 
+  end#end of is_expression? 
+end #end of RubyrtCompiler
+
+
+
+
+
+
+
+
+
+
+
+
+

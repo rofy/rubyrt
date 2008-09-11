@@ -1,0 +1,135 @@
+body{
+    background-color: #F2F1EE}
+.title0{font-size: 24;font-family: Times-Roman;text-align: left;color: #000000;font-style: normal;font-weight: 800;position: absolute;top: 0px;bottom: 620px;left: 0px;right: 0px;background-color: #DDDDDD}
+.title1{font-size: 13;font-family: Verdana;text-align: left;color: #000000;font-style: oblique;font-weight: bold;position: absolute;top: 15px;bottom: 620px;left: 110px;right: 10px;background-color: #DDDDDD}
+.th0{
+        font-family: Times-Roman;text-align: center;color: #F2F1EE;font-style: oblique;font-weight: bold;background-color: #1A3665;font-size: 13;}
+.th1{
+        font-family: Times-Roman;text-align: center;color: #000000;font-style: normal;font-weight: bold;background-color: green;font-size: 13;}
+.column_footer0{
+        font-family: Times-Roman;text-align: center;color: #F2F1EE;font-style: oblique;font-weight: bold;background-color: #1A3665;font-size: 13;}
+.column_footer1{
+        font-family: Times-Roman;text-align: center;color: #000000;font-style: normal;font-weight: bold;background-color: green;font-size: 13;}
+.tr0{
+          font-family:Times-Roman;text-align:center;color:#000000;font-style:#D8D6FB;font-weight:#D8D6FB;background-color:#D8D6FB;font-size:#D8D6FB;}
+.tr1{
+          font-family:Times-Roman;text-align:center;color:#000000;font-style:normal;font-weight:normal;background-color:#B5EDBC;font-size:13;}
+.last_page_footer0{
+          font-size: 18;font-family: Times-Roman;text-align: left;color: #ffffff;font-style: normal;font-weight: normal;background-color: #333C55}
+.summary0{
+          font-size: 20;font-family: Times-Roman;text-align: center;color: #000000;font-style: normal;font-weight: bolder;background-color: #DDDDDD}
+#business_logic0{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic1{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic2{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic3{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic4{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic5{font-weight:  bold;font-style:  oblique;}
+#business_logic6{font-weight:  bold;font-style:  oblique;}
+#business_logic7{font-weight:  bold;font-style:  oblique;}
+#business_logic8{font-weight:  bold;font-style:  oblique;}
+#business_logic9{font-weight:  bold;font-style:  oblique;}
+#business_logic10{font-weight:  bold;font-style:  oblique;}
+#business_logic11{font-weight:  bold;font-style:  oblique;}
+#business_logic12{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic13{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic14{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic15{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic16{font-weight:  bold;font-style:  oblique;}
+#business_logic17{font-weight:  bold;font-style:  oblique;}
+#business_logic18{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic19{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic20{font-weight:  bold;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic21{font-style:  oblique;}
+#business_logic22{font-style:  oblique;}
+#business_logic23{font-style:  oblique;}
+#business_logic24{font-style:  oblique;}
+#business_logic25{font-style:  oblique;}
+#business_logic26{font-style:  oblique;}
+#business_logic27{font-style:  oblique;}
+#business_logic28{font-style:  oblique;}
+#business_logic29{font-style:  oblique;}
+#business_logic30{font-style:  oblique;}
+#business_logic31{font-style:  oblique;}
+#business_logic32{font-style:  oblique;}
+#business_logic33{font-style:  oblique;}
+#business_logic34{font-size:  30;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic35{font-size:  30;background-color:  #7C90BA;font-style:  oblique;}
+#business_logic36{font-style:  oblique;}
+#business_logic37{background-color:  #7C90BA;}
+#business_logic38{background-color:  #7C90BA;}
+#business_logic39{background-color:  #7C90BA;}
+#business_logic40{}
+#business_logic41{background-color:  #7C90BA;}
+#business_logic42{background-color:  #7C90BA;}
+#business_logic43{}
+#business_logic44{}
+#business_logic45{}
+#business_logic46{background-color:  #7C90BA;}
+#business_logic47{background-color:  #7C90BA;}
+#business_logic48{background-color:  #7C90BA;}
+#business_logic49{}
+#business_logic50{}
+#business_logic51{}
+#business_logic52{}
+#business_logic53{}
+#business_logic54{}
+#business_logic55{}
+#business_logic56{background-color:  #7C90BA;}
+#business_logic57{}
+#business_logic58{}
+#business_logic59{}
+#business_logic60{background-color:  #7C90BA;}
+#business_logic61{background-color:  #7C90BA;}
+#business_logic62{background-color:  #7C90BA;}
+#business_logic63{background-color:  #7C90BA;}
+#business_logic64{background-color:  #7C90BA;}
+#business_logic65{background-color:  #7C90BA;}
+#business_logic66{}
+#business_logic67{}
+#business_logic68{}
+#business_logic69{}
+#business_logic70{}
+#business_logic71{}
+#business_logic72{}
+#business_logic73{}
+#business_logic74{}
+#business_logic75{background-color:  #7C90BA;}
+#business_logic76{background-color:  #7C90BA;}
+#business_logic77{}
+#business_logic78{}
+#business_logic79{background-color:  #7C90BA;}
+#business_logic80{background-color:  #7C90BA;}
+#business_logic81{background-color:  #7C90BA;}
+#business_logic82{}
+#business_logic83{}
+#business_logic84{}
+#business_logic85{}
+#business_logic86{}
+#business_logic87{}
+#business_logic88{}
+#business_logic89{}
+#business_logic90{}
+#business_logic91{}
+#business_logic92{}
+#business_logic93{}
+#business_logic94{}
+#business_logic95{}
+#business_logic96{}
+#business_logic97{}
+#business_logic98{}
+#business_logic99{}
+#business_logic100{background-color:  #7C90BA;}
+#business_logic101{}
+#business_logic102{}
+#business_logic103{}
+#business_logic104{}
+#business_logic105{}
+#business_logic106{}
+#business_logic107{background-color:  #7C90BA;}
+#business_logic108{}
+#business_logic109{}
+#business_logic110{background-color:  #7C90BA;}
+#business_logic111{}
+#business_logic112{}
+#business_logic113{}
+#business_logic114{}

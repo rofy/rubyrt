@@ -1,0 +1,104 @@
+type:	map
+mapping:
+ "report":
+		type:	map
+		mapping:
+		 "report_page_width":
+		    type:      str
+		    required:  no
+		 "report_page_height":
+		    type:      str
+		    required:  no
+		 "report_background_color":
+		    type:      str
+		    required:  no
+		 "report_parent_path":
+		    type:      str
+		    required:  no   
+ "title":
+		type:	map
+		mapping:
+		 "title_font_face":
+		 	type:		str
+		 	required:	no
+		 "title_font_size":
+		 	type:		str
+		 	required:	no
+		 "title_align":
+		 	type:		str
+		 	required:	no
+		 "title_background_color":
+		 	type:		str
+		 	required:	no
+		 "title_font_color":
+		 	type:		str
+		 	required:	no
+		 "title_text":
+		 	type:		str
+		 	required:	no
+ "columns":
+		type:	map
+		mapping:
+		  "headers_font_face":
+		 	 type:	str
+		 	 required:	no	 	
+		  "headers_font_size":
+		 	 type:	str
+		 	 required:	no	 	
+		  "headers_background_color":
+		 	 type:	str
+		 	 required:	no	 	
+		  "headers_font_color":
+		 	 type:	str
+		 	 required:	no	 	
+		  "headers_align":
+		 	 type:	str
+		 	 required:	no	
+		  "headers_data":
+		 	 type:	map
+		 	 mapping:
+		        "text1":
+		 	       type:	str
+		  "fields_font_face":
+		 	 type:		str
+		 	 required:	no	 	
+		  "fields_font_size":
+		 	 type:		str
+		 	 required:	no
+		  "fields_background_color":
+		 	 type:		str
+		 	 required:	no	 	
+		  "fields_font_color":
+		 	 type:		str
+		 	 required:	no	 	
+		  "fields_align":
+		 	 type:		str
+		 	 required:	no	
+		  "fields_data":
+		 	 type:		map
+		 	 mapping:
+		 	 	 "text1":
+		 	 	 	type:	str
+		 	 	 "text2":
+		 	 	 	type:	str
+ "summary":
+		type:	map
+		mapping:
+		 "summary_font_face":
+		 	type:		str
+		 	required:	no
+		 "summary_font_size":
+		 	type:		str
+		 	required:	no
+		 "summary_align":
+		 	type:		str
+		 	required:	no
+		 "summary_background_color":
+		 	type:		str
+		 	required:	no
+		 "summary_font_color":
+		 	type:		str
+		 	required:	no
+		 "summary_text":
+		 	type:		str
+		 	required:	no		 	 	 	

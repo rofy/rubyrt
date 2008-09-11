@@ -1,0 +1,195 @@
+@name: ""
+@attribute: ""
+name: 'Report Name'
+background-color: '#F2F1EE'
+title: 
+  -
+    type: Static_Text
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '24'
+      font-face: 'Times-Roman'
+      font-weight: '800'
+      font-style: 'normal'
+      position: 'absolute'
+      top: '0px'
+      bottom: '620px' 
+      left: '0px'
+      right: '0px'
+    caption: 'Company:'
+  -
+    type: Parameter
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Verdana'
+      font-weight: 'bold'
+      font-style: 'oblique'
+      position: 'absolute'
+      top: '15px'
+      bottom: '620px' 
+      left: '110px'
+      right: '10px'
+    caption: @name  
+page_headers:
+  -
+    type: Static_Text
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'normal'
+    caption: 'table 1'
+  -
+    type: Static_Text
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'normal'
+    caption: 'table 2'    
+column_headers:
+  -
+    type: [Static_Text , Parameter, Static_Text, Static_Text, Static_Text ]
+    name: [Country , City, Age, Name, id]
+    style: 
+      background-color: 'blue'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'oblique'
+    caption: [Country, @attribute, Age, Name, id] 
+  -
+    type: [Static_Text]  
+    style: 
+      background-color: 'green'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'bold'
+      font-style: 'normal'
+    caption: [ Name]     
+group_by:
+  - [Country, City, Age]
+  - []
+  
+details:
+  -
+    type: Text_Field
+    name: [Country , City, Age, Name, id]
+    style: 
+      background-color: 'if Age.caption > 22 && Age.caption < 26 then Name.background-color = red; end'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: 'if City.caption == "Aswan" then Name.font-size = 30; end'
+      font-face: 'Times-Roman'
+      font-weight: 'if City.caption == "Alexandria" then Name.font-weight = bold; end'
+      font-style: 'if Country.caption.include?("gyp") then Name.font-style = oblique; end'
+    caption:
+  -
+    type: Text_Field
+    style: 
+      background-color: '#B5EDBC'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption:
+column_footers:
+  -
+    type: 
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption:
+page_footers:
+  -
+    type:
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption:
+last_page_footer:
+  - 
+    type:
+    style: 
+      background-color: '#333C55'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption: 'All eSpace employees'
+summary:
+  -  
+    type: Static_Text
+    style: 
+      background-color: '#DDDDDD'
+      height: '13'
+      width: '60'
+      align: 'left'
+      font-color: '#000000'
+      font-size: '13'
+      font-face: 'Times-Roman'
+      font-weight: 'normal'
+      font-style: 'normal'
+    caption: 'It can be seen from the report , that all employees are listed'
+data_source:
+  type: ActiveRecord
+  properties:
+    adapter: mysql
+    database: test_database
+    username: root
+    password: 123
+    host: localhost
+    encoding: utf8 
+    table: [[employees]]
+
